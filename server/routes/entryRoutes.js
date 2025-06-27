@@ -1,6 +1,8 @@
 import express from "express";
 import Entry from "../models/Entry.js";
-import { CohereClient } from "cohere-ai";
+import pkg from "cohere-ai";
+const { CohereClient } = pkg;
+
 
 const cohere = new CohereClient({
   token: process.env.COHERE_API_KEY,
