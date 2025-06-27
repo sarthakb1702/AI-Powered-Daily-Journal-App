@@ -1,16 +1,17 @@
-// client/src/api.js
-const BASE_URL = "https://ai-powered-daily-journal-app-7.onrender.com"; // Your backend URL
+const BASE_URL = "https://ai-powered-daily-journal-app-7.onrender.com";
 
-export const getEntries = async () => {
+export async function fetchEntries() {
   const res = await fetch(`${BASE_URL}/api/entries`);
   return res.json();
-};
+}
 
-export const postEntry = async (data) => {
+export async function submitEntry(entry) {
   const res = await fetch(`${BASE_URL}/api/entries`, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(data),
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(entry),
   });
   return res.json();
-};
+}
