@@ -1,6 +1,6 @@
 import express from "express";
 import cohere from "cohere-ai";
-import Entry from "../models/entryModel.js";
+import Entry from "../models/Entry.js";
 
 const router = express.Router();
 
