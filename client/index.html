@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Journal Timeline</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background-color: #f5f7fa;
+      padding: 2rem;
+    }
+    h1 {
+      text-align: center;
+    }
+    form {
+      max-width: 600px;
+      margin: auto;
+      margin-bottom: 2rem;
+    }
+    textarea {
+      width: 100%;
+      height: 120px;
+      padding: 1rem;
+      font-size: 1rem;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+    button {
+      margin-top: 0.5rem;
+      padding: 0.75rem 1.5rem;
+      background-color: #4f46e5;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .timeline {
+      max-width: 700px;
+      margin: auto;
+    }
+    .entry {
+      background: white;
+      padding: 1rem;
+      border-radius: 10px;
+      margin-bottom: 1rem;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    .entry time {
+      font-size: 0.9rem;
+      color: gray;
+    }
+    .mood {
+      font-weight: bold;
+      color: #2563eb;
+    }
+  </style>
+</head>
+<body>
+  <h1>📝 My AI Journal</h1>
+
+  <form id="entryForm">
+    <textarea id="content" placeholder="Write your thoughts here..."></textarea><br />
+    <button type="submit">Save Entry</button>
+  </form>
+
+  <div class="timeline" id="timeline"></div>
+
+  <script>
+    const form = document.getElementById("entryForm");
+    const contentInput = document.getElementById("content");
+    const timeline = document.getElementById("timeline");
+
+    async function loadEntries() {
+      const res = await fetch("http://localhost:5000/api/entries");
+      const data = await res.json();
+      timeline.innerHTML = "";
+      data.forEach(entry => {
+        const div = document.createElement("div");
+        div.className = "entry";
+        div.innerHTML = `
+          <time>${new Date(entry.createdAt).toLocaleString()}</time>
+          <p><strong>Summary:</strong> ${entry.summary}</p>
+          <p><strong>Mood:</strong> <span class="mood">${entry.mood}</span></p>
+          <p>${entry.content}</p>
+        `;
+        timeline.appendChild(div);
+      });
+    }
+
+    form.addEventListener("submit", async e => {
+      e.preventDefault();
+      const content = contentInput.value.trim();
+      if (!content) return;
+
+      await fetch("http://localhost:5000/api/entries", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ content })
+      });
+
+      contentInput.value = "";
+      loadEntries();
+    });
+
+    // Initial load
+    loadEntries();
+  </script>
+</body>
+</html>
