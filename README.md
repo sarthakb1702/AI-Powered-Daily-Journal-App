@@ -4,12 +4,6 @@ This web application allows users to write and save daily journal entries, which
 
 ---
 
-## 🌐 Live Demo
-
-🔗 [View Deployed App](https://your-live-link-here.com)
-
----
-
 ## 🚀 Features
 
 - 📝 Write and save daily journal entries
